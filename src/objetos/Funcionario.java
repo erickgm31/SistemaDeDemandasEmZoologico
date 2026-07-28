@@ -1,7 +1,5 @@
 package objetos;
 
-import java.util.*;
-
 public abstract class Funcionario {
     private Integer usuario;
     private String senha;
@@ -9,19 +7,19 @@ public abstract class Funcionario {
     private int idade;
     private String formacao;
     private double salario;
-    private String orientacaoSexual;
+    private String telefone;
 
 
     // hast map que guarda o usuario e qual o funcionario, apenas criado
    // objeto criado para fazer os sorteios
 
 
-    public Funcionario(String nome,int idade, String formacao,String orientacaoSexual,double salario ){
+    public Funcionario(String nome,int idade, String formacao,String telefone,double salario ){
         this.nome = nome;
         this.idade = idade;
         this.formacao = formacao;
         this.salario = salario;
-        this.orientacaoSexual = orientacaoSexual;
+        this.telefone = telefone;
     }
 
 
@@ -41,12 +39,12 @@ public abstract class Funcionario {
         this.usuario = usuario;
     }
 
-    public String getOrientacaoSexual() {
-        return orientacaoSexual;
+    public String getTelefone() {
+        return telefone;
     }
 
-    public void setOrientacaoSexual(String orientacaoSexual) {
-        this.orientacaoSexual = orientacaoSexual;
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
     }
 
     public double getSalario() {
@@ -81,7 +79,16 @@ public abstract class Funcionario {
         this.nome = nome;
     }
 
-    public abstract void exibirInformacoes();
+    public void exibirInformacoes() {
+        System.out.println("Nome: " + getNome());
+        System.out.println("Usuario: " + getUsuario());
+        System.out.println("Cargo: " + getClass());
+        System.out.println("Idade: " + getIdade());
+        System.out.println("Formação: " + getFormacao());
+        System.out.println("Numero de Celular: " + getTelefone());
+        System.out.println("Salario: " + getSalario());
+    }
+
     public abstract void removerDemanda(int indice) throws Vazio;
     public abstract void receberDemandas(String demanda) throws Vazio;
     public abstract void exibirDemandas() throws Vazio;
