@@ -1,9 +1,11 @@
-import objetos.Admistrador;
+package objetos;
 
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
+
+
 
 
 
