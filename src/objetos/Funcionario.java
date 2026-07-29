@@ -82,14 +82,14 @@ public abstract class Funcionario {
     public void exibirInformacoes() {
         System.out.println("Nome: " + getNome());
         System.out.println("Usuario: " + getUsuario());
-        System.out.println("Cargo: " + getClass());
         System.out.println("Idade: " + getIdade());
         System.out.println("Formação: " + getFormacao());
         System.out.println("Numero de Celular: " + getTelefone());
         System.out.println("Salario: " + getSalario());
     }
 
-    public abstract void removerDemanda(int indice) throws Vazio;
-    public abstract void receberDemandas(String demanda) throws Vazio;
-    public abstract void exibirDemandas() throws Vazio;
+    public abstract void removerDemanda(int indice) ;
+    public abstract void receberDemandas(String demanda);
+    public abstract void exibirDemandas();
+    public abstract java.util.List<String> getListaDemandas();
 }

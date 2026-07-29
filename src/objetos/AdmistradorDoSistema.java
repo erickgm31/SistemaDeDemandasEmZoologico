@@ -15,7 +15,7 @@ public class AdmistradorDoSistema extends Funcionario {
 
 
     @Override
-    public void receberDemandas(String demanda)throws Vazio{
+    public void receberDemandas(String demanda){
         getDemadasAdm().add(demanda);
     }
 
@@ -24,9 +24,9 @@ public class AdmistradorDoSistema extends Funcionario {
     }
 
     @Override
-    public void exibirDemandas() throws Vazio {
+    public void exibirDemandas() {
         if(getDemadasAdm().isEmpty()){ // Tratamento de Exceção para poder remover.
-            throw new Vazio("Não há demandas cadrastadas.");
+            System.out.println("Não há demandas cadrastadas.");
         } else {
             System.out.println("Você possui tais demandas: ");
             for(int i = 0; i < getDemadasAdm().size(); i++){
@@ -36,14 +36,19 @@ public class AdmistradorDoSistema extends Funcionario {
     }
 
     @Override
-    public void removerDemanda(int indice) throws Vazio{
+    public void removerDemanda(int indice){
         if(getDemadasAdm().isEmpty()){ // Tratamento de Exceção para poder remover.
-            throw new Vazio("Não há demandas cadrastadas ou indice errado.");
+            System.out.println("Não há demandas cadrastadas.");
         } else if (indice-1 < 0 || indice-1 > getDemadasAdm().size()){
-            throw new Vazio("Não há demandas cadrastadas ou indice errado.");
+            System.out.println("Indice errado.");
         }else {
             getDemadasAdm().remove(indice-1); // removendo demanda exclusiva dos adimns
         }
+    }
+
+    @Override
+    public java.util.List<String> getListaDemandas() {
+        return getDemadasAdm();
     }
 
 
