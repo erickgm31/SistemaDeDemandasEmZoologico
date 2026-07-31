@@ -2,27 +2,25 @@ package objetos;
 
 import java.util.ArrayList;
 
-// Classe que representa o Zootecnista.
+// Classe que representa o zootecnista dentro do sistema.
 public class Zootecnista extends Funcionario {
 
-    // Atributo próprio do zootecnista
+    // Área específica de atuação do zootecnista.
     private String areaAtuacao;
 
-    // Lista de demandas do zootecnista
+    // Lista utilizada para armazenar as demandas atribuídas ao zootecnista.
     private ArrayList<String> demandasZootecnista = new ArrayList<>();
 
-    // Construtor
-    public Zootecnista(String nome, int idade, String formacao, String telefone, double salario, String areaAtuacao) {
+    // Inicializa os atributos herdados de Funcionario e a área de atuação.
+    public Zootecnista(String nome, int idade, String formacao,
+                       String telefone, double salario, String areaAtuacao) {
         super(nome, idade, formacao, telefone, salario);
         this.areaAtuacao = areaAtuacao;
     }
 
-    // Getters e Setters
-
     public ArrayList<String> getDemandasZootecnista() {
         return demandasZootecnista;
     }
-
 
     public String getAreaAtuacao() {
         return areaAtuacao;
@@ -32,7 +30,7 @@ public class Zootecnista extends Funcionario {
         this.areaAtuacao = areaAtuacao;
     }
 
-    // Exibe as informações do zootecnista
+    // Exibe as informações básicas do funcionário e sua área de atuação.
     @Override
     public void exibirInformacoes() {
         System.out.println("Nome: " + getNome());
@@ -42,37 +40,46 @@ public class Zootecnista extends Funcionario {
         System.out.println("Área de Atuação: " + areaAtuacao);
     }
 
-    // Remove uma demanda da lista
+    // Remove uma demanda utilizando o índice informado pelo usuário.
     @Override
     public void removerDemanda(int indice) {
         if (getDemandasZootecnista().isEmpty()) {
             System.out.println("Não há demandas cadastradas.");
+
+            // Verifica se o índice informado corresponde a uma posição válida.
         } else if (indice - 1 < 0 || indice - 1 > getDemandasZootecnista().size()) {
-            System.out.println("índice errado.");
+            System.out.println("Índice errado.");
+
         } else {
             getDemandasZootecnista().remove(indice - 1);
         }
     }
 
-    // Adiciona uma demanda
+    // Adiciona uma nova demanda à lista do zootecnista.
     @Override
     public void receberDemandas(String demanda){
         getDemandasZootecnista().add(demanda);
     }
 
-    // Exibe as demandas cadastradas
+    // Exibe todas as demandas atualmente atribuídas ao zootecnista.
     @Override
     public void exibirDemandas(){
-        if(getDemandasZootecnista().isEmpty()){ // Tratamento de Exceção para poder remover.
-            System.out.println("Não há demandas cadrastadas.");
+        if(getDemandasZootecnista().isEmpty()){
+            System.out.println("Não há demandas cadastradas.");
         } else {
             System.out.println("Você possui tais demandas: ");
+
+            // Percorre a lista exibindo cada demanda e seu respectivo índice.
             for(int i = 0; i < getDemandasZootecnista().size(); i++){
-                System.out.println("Indice: " + (i+1) + "Demanda: " + getDemandasZootecnista().get(i));
+                System.out.println(
+                        "Indice: " + (i + 1) +
+                                " Demanda: " + getDemandasZootecnista().get(i)
+                );
             }
         }
     }
 
+    // Retorna a lista de demandas no formato definido pela classe Funcionario.
     @Override
     public java.util.List<String> getListaDemandas() {
         return getDemandasZootecnista();

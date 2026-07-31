@@ -5,16 +5,22 @@ import java.util.*;
 import java.util.UUID;
 
 public class SistemaZoo {
+
     Random random = new Random();
     Scanner SC = new Scanner(System.in);
 
+    // Armazena os funcionários utilizando o código de usuário como chave.
     protected HashMap<Integer, Funcionario> funcionarios = new HashMap<>();
+
+    // Responsável pelo carregamento e salvamento dos dados do sistema.
     private GerenciamentoArquivos gerenciadorArquivo = new GerenciamentoArquivos();
 
-    public HashMap<Integer, Funcionario>  getFuncionarios(){
-        return funcionarios;  // retorna o hast map de funcrionario
+    // Retorna o HashMap que contém todos os funcionários cadastrados.
+    public HashMap<Integer, Funcionario> getFuncionarios(){
+        return funcionarios;
     }
 
+    // Inicializa o sistema carregando os funcionários e suas demandas salvas.
     public void iniciarSistema(){
         try {
             funcionarios = gerenciadorArquivo.carregarFuncionarios();
@@ -25,6 +31,7 @@ public class SistemaZoo {
 
         System.out.println("-- Bem Vindo(a) ao Sistema de Gerenciamento de Demandas Zoológico Parahyba -- ");
 
+        // Caso seja o primeiro acesso, cria o administrador antes de realizar o login.
         if(funcionarios.isEmpty()){
             crieUser();
             login();
@@ -33,22 +40,28 @@ public class SistemaZoo {
         }
     }
 
+    // Gera um código de usuário aleatório e garante que ele seja único.
     public void criarUsuario(Funcionario funcionario){
-        Integer usuario = random.nextInt(90000) + 10000;  // Criando User Aleatorio com 5 numeros entre 10000 - 99999
-        // verifica se ja existi, so sai do while, quando for exclusivo
+        Integer usuario = random.nextInt(90000) + 10000;
+
         while (funcionarios.containsKey(usuario)){
             usuario = random.nextInt(90000) + 10000;
         }
+
         funcionario.setUsuario(usuario);
     }
 
+    // Gera uma senha inicial aleatória para o funcionário.
     public void criarSenha(Funcionario funcionario){
-        String primeiraSenha = UUID.randomUUID().toString().substring(0,8); // cria senha aleatoria, o plano é que depois do primeiro acesso, o user a troque
+        String primeiraSenha = UUID.randomUUID().toString().substring(0,8);
         funcionario.setSenha(primeiraSenha);
     }
 
+    // Solicita os dados do funcionário e define o cargo que será criado.
     public void crieUser(){
         int escolha;
+
+        // O primeiro funcionário cadastrado obrigatoriamente será o administrador.
         if(funcionarios.isEmpty()){
             System.out.println("Crie o Admistrador do Sistema!");
             escolha = 0;
@@ -71,106 +84,142 @@ public class SistemaZoo {
 
         System.out.print("Nome: ");
         String nome = SC.nextLine();
+        SC.nextLine();
+
         System.out.print("Idade: ");
         int idade = SC.nextInt();
         SC.nextLine();
+
         System.out.print("Formação: ");
         String formacao = SC.nextLine();
+
         System.out.print("Telefone: ");
         String telefone = SC.next();
+
         System.out.print("Salario: ");
         double salario = SC.nextDouble();
 
         instaciarFuncionario(nome, idade, formacao, telefone, salario, escolha);
-
     }
 
+    // Cria o objeto correspondente ao cargo escolhido e realiza seu cadastro.
     public void instaciarFuncionario(String nome, int idade, String formacao, String telefone, double salario, int escolha){
+
+        // Valida os dados básicos antes de permitir o cadastro.
         if(salario > 0 && idade >= 18) {
-             if (escolha == 0) {
+
+            if (escolha == 0) {
                 Funcionario Adm0 = new AdmistradorDoSistema(nome, idade, formacao, telefone, salario);
+
                 criarUsuario(Adm0);
                 criarSenha(Adm0);
                 funcionarios.put(Adm0.getUsuario(), Adm0);
+
                 System.out.println("Administrador do Sistema criado com sucesso!");
                 System.out.println("Usuario: " + Adm0.getUsuario());
                 System.out.println("Senha: " + Adm0.getSenha());
 
-             } else if (escolha == 1) {
-                 Gerente Gerente = new Gerente(nome, idade, formacao, telefone, salario);
-                 criarUsuario(Gerente);
-                 criarSenha(Gerente);
-                 funcionarios.put(Gerente.getUsuario(), Gerente);
-                 System.out.println("Gerente Criado!");
-                 System.out.println("Usuario: " + Gerente.getUsuario());
-                 System.out.println("Senha: " + Gerente.getSenha());
-             } else if (escolha == 2){
-                 TratadorAnimais TA = new TratadorAnimais(nome, idade, formacao, telefone, salario);
-                 criarUsuario(TA);
-                 criarSenha(TA);
-                 funcionarios.put(TA.getUsuario(), TA);
-                 System.out.println("Gerente Criado!");
-                 System.out.println("Usuario: " + TA.getUsuario());
-                 System.out.println("Senha: " + TA.getSenha());
-             } else if(escolha == 3){
-                 System.out.print("Área de Atuação: ");
-                 String areaAtuacao = SC.nextLine();
-                 Zootecnista Zoot = new Zootecnista(nome, idade, formacao, telefone, salario,areaAtuacao);
-                 criarUsuario(Zoot);
-                 criarSenha(Zoot);
-                 funcionarios.put(Zoot.getUsuario(), Zoot);
-                 System.out.println("Medico Veterinario Criado!");
-                 System.out.println("Usuario: " + Zoot.getUsuario());
-                 System.out.println("Senha: " + Zoot.getSenha());
-             } else if(escolha == 4){
-                 System.out.print("CRVM: ");
-                 String crvm = SC.nextLine();
-                 MedicoVeterinario MV = new MedicoVeterinario(nome, idade, formacao, telefone, salario,crvm);
-                 criarUsuario(MV);
-                 criarSenha(MV);
-                 funcionarios.put(MV.getUsuario(), MV);
-                 System.out.println("Medico Veterinario Criado!");
-                 System.out.println("Usuario: " + MV.getUsuario());
-                 System.out.println("Senha: " + MV.getSenha());
-             } else if(escolha == 5){
-                 System.out.print("Especialidade: ");
-                 String areaDpesquisa = SC.nextLine();
-                 System.out.print("Registro Ambiental: ");
-                 String registroAmbiental = SC.nextLine();
-                 Biologo Bio = new Biologo(nome, idade, formacao, telefone, salario, areaDpesquisa, registroAmbiental);
-                 criarUsuario(Bio);
-                 criarSenha(Bio);
-                 funcionarios.put(Bio.getUsuario(), Bio);
-                 System.out.println("Biologo Criado!");
-                 System.out.println("Usuario: " + Bio.getUsuario());
-                 System.out.println("Senha: " + Bio.getSenha());
+            } else if (escolha == 1) {
+                Gerente Gerente = new Gerente(nome, idade, formacao, telefone, salario);
 
-             } else if(escolha == 6 ){
-                 System.out.print("Especialidade: ");
-                 String especialidade = SC.nextLine();
-                 Manutecao Manut = new Manutecao(nome, idade, formacao, telefone, salario, especialidade);
-                 criarUsuario(Manut);
-                 criarSenha(Manut);
-                 funcionarios.put(Manut.getUsuario(), Manut);
-                 System.out.println("Auxiliar de Manunteção Criado!");
-                 System.out.println("Usuario: " + Manut.getUsuario());
-                 System.out.println("Senha: " + Manut.getSenha());
-             } else if(escolha == 7){
-                 AuxiliardeLimpeza AxL = new AuxiliardeLimpeza(nome, idade, formacao, telefone, salario);
-                 criarUsuario(AxL);
-                 criarSenha(AxL);
-                 funcionarios.put(AxL.getUsuario(), AxL);
-                 System.out.println("Auxiliar de Limpeza Criado!");
-                 System.out.println("Usuario: " + AxL.getUsuario());
-                 System.out.println("Senha: " + AxL.getSenha());
+                criarUsuario(Gerente);
+                criarSenha(Gerente);
+                funcionarios.put(Gerente.getUsuario(), Gerente);
 
-             } else{
-                 System.out.println("Escolha fora do limite!");
-             }
-        }  else {
+                System.out.println("Gerente Criado!");
+                System.out.println("Usuario: " + Gerente.getUsuario());
+                System.out.println("Senha: " + Gerente.getSenha());
+
+            } else if (escolha == 2){
+                TratadorAnimais TA = new TratadorAnimais(nome, idade, formacao, telefone, salario);
+
+                criarUsuario(TA);
+                criarSenha(TA);
+                funcionarios.put(TA.getUsuario(), TA);
+
+                System.out.println("Gerente Criado!");
+                System.out.println("Usuario: " + TA.getUsuario());
+                System.out.println("Senha: " + TA.getSenha());
+
+            } else if(escolha == 3){
+                System.out.print("Área de Atuação: ");
+                String areaAtuacao = SC.nextLine();
+
+                Zootecnista Zoot = new Zootecnista(nome, idade, formacao, telefone, salario, areaAtuacao);
+
+                criarUsuario(Zoot);
+                criarSenha(Zoot);
+                funcionarios.put(Zoot.getUsuario(), Zoot);
+
+                System.out.println("Medico Veterinario Criado!");
+                System.out.println("Usuario: " + Zoot.getUsuario());
+                System.out.println("Senha: " + Zoot.getSenha());
+
+            } else if(escolha == 4){
+                System.out.print("CRVM: ");
+                String crvm = SC.nextLine();
+
+                MedicoVeterinario MV = new MedicoVeterinario(nome, idade, formacao, telefone, salario, crvm);
+
+                criarUsuario(MV);
+                criarSenha(MV);
+                funcionarios.put(MV.getUsuario(), MV);
+
+                System.out.println("Medico Veterinario Criado!");
+                System.out.println("Usuario: " + MV.getUsuario());
+                System.out.println("Senha: " + MV.getSenha());
+
+            } else if(escolha == 5){
+                System.out.print("Especialidade: ");
+                String areaDpesquisa = SC.nextLine();
+
+                System.out.print("Registro Ambiental: ");
+                String registroAmbiental = SC.nextLine();
+
+                Biologo Bio = new Biologo(nome, idade, formacao, telefone, salario, areaDpesquisa, registroAmbiental);
+
+                criarUsuario(Bio);
+                criarSenha(Bio);
+                funcionarios.put(Bio.getUsuario(), Bio);
+
+                System.out.println("Biologo Criado!");
+                System.out.println("Usuario: " + Bio.getUsuario());
+                System.out.println("Senha: " + Bio.getSenha());
+
+            } else if(escolha == 6 ){
+                System.out.print("Especialidade: ");
+                String especialidade = SC.nextLine();
+
+                Manutecao Manut = new Manutecao(nome, idade, formacao, telefone, salario, especialidade);
+
+                criarUsuario(Manut);
+                criarSenha(Manut);
+                funcionarios.put(Manut.getUsuario(), Manut);
+
+                System.out.println("Auxiliar de Manunteção Criado!");
+                System.out.println("Usuario: " + Manut.getUsuario());
+                System.out.println("Senha: " + Manut.getSenha());
+
+            } else if(escolha == 7){
+                AuxiliardeLimpeza AxL = new AuxiliardeLimpeza(nome, idade, formacao, telefone, salario);
+
+                criarUsuario(AxL);
+                criarSenha(AxL);
+                funcionarios.put(AxL.getUsuario(), AxL);
+
+                System.out.println("Auxiliar de Limpeza Criado!");
+                System.out.println("Usuario: " + AxL.getUsuario());
+                System.out.println("Senha: " + AxL.getSenha());
+
+            } else{
+                System.out.println("Escolha fora do limite!");
+            }
+
+        } else {
             System.out.println("Volte ao Menu!");
         }
 
+        // Salva os funcionários para manter os dados mesmo após o encerramento.
         try {
             gerenciadorArquivo.salvarFuncionarios(funcionarios);
         } catch (IOException e) {
@@ -178,6 +227,7 @@ public class SistemaZoo {
         }
     }
 
+    // Cria uma demanda e solicita o cargo responsável por atendê-la.
     public void informarDemanda(){
         System.out.println();
         System.out.print("Demanda: ");
@@ -197,6 +247,7 @@ public class SistemaZoo {
 
         System.out.print("Opção: ");
         int tipoFuncionario = SC.nextInt();
+
         Demanda demandaInformada = new Demanda(demanda, tipoFuncionario);
         enviarDemanda(demandaInformada);
 
@@ -208,6 +259,7 @@ public class SistemaZoo {
         }
     }
 
+    // Retorna uma lista contendo somente os funcionários do cargo informado.
     public ArrayList<Funcionario> buscarFuncionariosPorCargo(int tipoFuncionario){
         ArrayList<Funcionario> lista = new ArrayList<>();
 
@@ -216,13 +268,28 @@ public class SistemaZoo {
                 lista.add(funcionario);
             } else if (tipoFuncionario == 1 && funcionario instanceof Gerente) {
                 lista.add(funcionario);
+            } else if (tipoFuncionario == 2 && funcionario instanceof TratadorAnimais) {
+                lista.add(funcionario);
+            } else if (tipoFuncionario == 3 && funcionario instanceof Zootecnista) {
+                lista.add(funcionario);
+            } else if (tipoFuncionario == 4 && funcionario instanceof MedicoVeterinario) {
+                lista.add(funcionario);
+            } else if (tipoFuncionario == 5 && funcionario instanceof Biologo) {
+                lista.add(funcionario);
+            } else if (tipoFuncionario == 6 && funcionario instanceof Manutecao) {
+                lista.add(funcionario);
+            } else if (tipoFuncionario == 7 && funcionario instanceof AuxiliardeLimpeza) {
+                lista.add(funcionario);
             }
         }
+
         return lista;
     }
 
+    // Seleciona aleatoriamente um funcionário do cargo solicitado e envia a demanda.
     public void enviarDemanda(Demanda demanda) {
-        ArrayList<Funcionario> lista = buscarFuncionariosPorCargo(demanda.getTipoFuncionario());
+        ArrayList<Funcionario> lista =
+                buscarFuncionariosPorCargo(demanda.getTipoFuncionario());
 
         if(lista.isEmpty()){
             System.out.println("Não existe funcionário desse cargo.");
@@ -230,6 +297,7 @@ public class SistemaZoo {
 
         int escolha = random.nextInt(lista.size());
         Funcionario escolhido = lista.get(escolha);
+
         escolhido.receberDemandas(demanda.getProblema());
 
         try {
@@ -239,6 +307,7 @@ public class SistemaZoo {
         }
     }
 
+    // Realiza a autenticação do funcionário utilizando seu código e senha.
     public void login(){
 
         System.out.println("------ Faça Login ------");
@@ -257,6 +326,7 @@ public class SistemaZoo {
         int tentativas = 0;
         String senha;
 
+        // Limita a quantidade de tentativas de senha para cinco.
         while (tentativas < 5) {
             System.out.print("Senha: ");
             senha = SC.nextLine();
@@ -264,16 +334,17 @@ public class SistemaZoo {
             if (Objects.equals(acesso.getSenha(), senha)) {
                 System.out.println("Login realizado");
                 menu(acesso.getUsuario());
-
                 return;
             }
+
             tentativas++;
             System.out.println("Senha Incorreta, tente novamente: ");
-
         }
+
         System.out.println("Você atingiu o limite de tentaivas. ");
     }
 
+    // Permite que o funcionário altere sua senha após confirmar a senha atual.
     public void redefinirSenha(int user){
         Funcionario funcionario = funcionarios.get(user);
 
@@ -291,6 +362,7 @@ public class SistemaZoo {
             System.out.print("Informe a nova senha: ");
             String novaSenha = SC.nextLine();
 
+            // Exige uma senha com pelo menos oito caracteres.
             if (novaSenha.length() < 8) {
                 System.out.println("A senha deve possuir no mínimo 8 caracteres.");
                 continue;
@@ -317,6 +389,7 @@ public class SistemaZoo {
         }
     }
 
+    // Permite alterar os dados pessoais e profissionais de um funcionário.
     public void editarFuncionario(int user){
         System.out.println("Para Editar digite o indice do que deseja: ");
         System.out.println(" 1 - Nome      ");
@@ -327,6 +400,7 @@ public class SistemaZoo {
 
         Funcionario funcionario = funcionarios.get(user);
 
+        // Exibe opções adicionais de acordo com o cargo do funcionário.
         if(funcionario instanceof Zootecnista){
             System.out.println(" 6 - Área Atuacão:    ");
         } else if (funcionario instanceof MedicoVeterinario) {
@@ -348,6 +422,7 @@ public class SistemaZoo {
                 String nome = SC.nextLine();
                 funcionarios.get(user).setNome(nome);
                 break;
+
             case 2:
                 System.out.print("Nova idade: ");
                 int idade = SC.nextInt();
@@ -374,16 +449,19 @@ public class SistemaZoo {
                 break;
 
             case 6:
+                // O atributo alterado depende do tipo específico do funcionário.
                 if(funcionario instanceof Zootecnista){
                     System.out.print("Nova Área de atuação: ");
                     String AreaAtuacao = SC.nextLine();
                     ((Zootecnista) funcionario).setAreaAtuacao(AreaAtuacao);
                     break;
+
                 } else if (funcionario instanceof MedicoVeterinario) {
                     System.out.print("Novo CRVM: ");
                     String CRVM = SC.nextLine();
                     ((MedicoVeterinario) funcionario).setCrmv(CRVM);
                     break;
+
                 } else if (funcionario instanceof Manutecao) {
                     System.out.print("Nova Especialidade: ");
                     String especialidade = SC.nextLine();
@@ -395,9 +473,11 @@ public class SistemaZoo {
                     String areaDpesquisa = SC.nextLine();
                     ((Biologo) funcionario).setAreaPesquisa(areaDpesquisa);
                     break;
+
                 } else{
                     System.out.println("Opção inválida.");
                 }
+
             case 7:
                 if (funcionario instanceof Biologo) {
                     System.out.print("Novo Registro Ambiental: ");
@@ -407,6 +487,7 @@ public class SistemaZoo {
                 } else{
                     System.out.println("Opção inválida.");
                 }
+
             default:
                 System.out.println("Opção inválida.");
         }
@@ -420,8 +501,10 @@ public class SistemaZoo {
         System.out.println("Funcionário atualizado com sucesso!");
     }
 
+    // Remove um funcionário pelo código de usuário e atualiza o arquivo de dados.
     public void removerFuncionario(int user){
         funcionarios.remove(user);
+
         try {
             gerenciadorArquivo.salvarFuncionarios(funcionarios);
         } catch (IOException e) {
@@ -429,6 +512,7 @@ public class SistemaZoo {
         }
     }
 
+    // Exibe as informações de um funcionário a partir do seu código de usuário.
     public void verFuncionarios(int user){
         if(funcionarios.containsKey(user)) {
             System.out.println(" ------ Informações do usuario: " + user + " ------");
@@ -436,14 +520,15 @@ public class SistemaZoo {
         } else{
             System.out.println("Usuario Inexistente!");
         }
-
     }
 
+    // Pausa a execução até que o usuário pressione ENTER.
     public void pausar(){
         System.out.println("\nPressione ENTER para contininuar...");
         SC.nextLine();
     }
 
+    // Controla o menu principal e as funcionalidades disponíveis para cada funcionário.
     public void menu(int user){
         boolean executando = true;
         int indice;
@@ -452,6 +537,7 @@ public class SistemaZoo {
 
         while (executando){
             SC.nextLine();
+
             System.out.println("Bem vindo de volta " + funcionarios.get(user).getNome());
             System.out.println();
 
@@ -463,6 +549,7 @@ public class SistemaZoo {
             System.out.println(" 4 - Informar Conclusão da Demanda.");
             System.out.println(" 5 - Alterar Senha.                ");
 
+            // Somente administradores possuem acesso ao gerenciamento de funcionários.
             if(funcionario instanceof AdmistradorDoSistema){
                 System.out.println(" 6 - Cadastrar Funcionario.     ");
                 System.out.println(" 7 - Editar Funcionario.        ");
@@ -477,13 +564,11 @@ public class SistemaZoo {
 
             switch (opcao) {
                 case 1:
-                    System.out.println();
                     funcionario.exibirInformacoes();
                     pausar();
                     break;
 
                 case 2:
-                    System.out.println();
                     funcionario.exibirDemandas();
                     pausar();
                     break;
@@ -536,15 +621,18 @@ public class SistemaZoo {
                     }
                     pausar();
                     break;
+
                 case 9:
                     System.out.println("Digite o usuario que deseja ver as informações: ");
                     Integer usuario = SC.nextInt();
                     verFuncionarios(usuario);
                     pausar();
                     break;
+
                 case 0:
                     executando = false;
                     break;
+
                 default:
                     System.out.println("Valor fora dos limites!");
             }

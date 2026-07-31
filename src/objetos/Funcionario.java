@@ -1,6 +1,8 @@
 package objetos;
 
 public abstract class Funcionario {
+
+    // Dados comuns a todos os funcionários do sistema.
     private Integer usuario;
     private String senha;
     private String nome;
@@ -9,19 +11,15 @@ public abstract class Funcionario {
     private double salario;
     private String telefone;
 
-
-    // hast map que guarda o usuario e qual o funcionario, apenas criado
-   // objeto criado para fazer os sorteios
-
-
-    public Funcionario(String nome,int idade, String formacao,String telefone,double salario ){
+    // Inicializa os dados básicos do funcionário.
+    // Os atributos específicos de cada cargo são definidos nas classes filhas.
+    public Funcionario(String nome, int idade, String formacao, String telefone, double salario) {
         this.nome = nome;
         this.idade = idade;
         this.formacao = formacao;
         this.salario = salario;
         this.telefone = telefone;
     }
-
 
     public String getSenha() {
         return senha;
@@ -79,6 +77,9 @@ public abstract class Funcionario {
         this.nome = nome;
     }
 
+    // Exibe os dados básicos do funcionário.
+    // As classes filhas podem complementar essas informações
+    // com seus próprios atributos.
     public void exibirInformacoes() {
         System.out.println("Nome: " + getNome());
         System.out.println("Usuario: " + getUsuario());
@@ -88,8 +89,14 @@ public abstract class Funcionario {
         System.out.println("Salario: " + getSalario());
     }
 
-    public abstract void removerDemanda(int indice) ;
+    // Define operações que devem ser implementadas pelas classes filhas.
+    // Cada cargo pode possuir sua própria forma de gerenciar demandas.
+    public abstract void removerDemanda(int indice);
+
     public abstract void receberDemandas(String demanda);
+
     public abstract void exibirDemandas();
+
     public abstract java.util.List<String> getListaDemandas();
 }
+
