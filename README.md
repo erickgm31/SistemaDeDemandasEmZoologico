@@ -16,6 +16,9 @@ além do acompanhamento das demandas.
 - PostgreSQL
 - Git
 - GitHub
+- HTML 
+- CSS
+- JavaScript 
 
 ## 👥 Equipe
 
