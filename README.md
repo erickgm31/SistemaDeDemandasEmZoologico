@@ -1,4 +1,4 @@
-# 🦁 Sistema de Gerenciamento de Zoológico
+# 🦁 Sistema de Gerenciamento de Demandas em um Zoológico
 
 Sistema desenvolvido para auxiliar no gerenciamento das atividades
 e demandas de profissionais de um zoológico.
@@ -49,7 +49,7 @@ além do acompanhamento das demandas.
 ### Links: 
 
 - [Trello](https://trello.com/invite/b/6ab1b096d4052c761fcc4862/ATTIb6d9046ed93a40369ef259ef6aa7f24cA3EB9E32/pipp3-sistema-de-demandas-em-zoologico)
-- [Riscos](Cola o link Daniel)
+- [Riscos](docs/riscos.md)
 
 
 
